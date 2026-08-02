@@ -16,6 +16,9 @@ df.columns = [
     "Median_Wage_2024"
 ]
 
+#remove all na row
+df = df.dropna()
+
 # Save processed data
 df.to_json("data/processed.json", orient="records")
 # print(df.head())
