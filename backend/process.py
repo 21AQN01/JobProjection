@@ -1,7 +1,6 @@
-# %%
 import pandas as pd
 
-# Load raw data
+# Load raw data, skip first title row
 df = pd.read_excel("raw_data/employPerDeg.xlsx", sheet_name="Table 5.2", skiprows=1)
 
 # rename columns
@@ -19,6 +18,8 @@ df.columns = [
 #remove all na row
 df = df.dropna()
 
-# Save processed data
+# Save processed data as json
 df.to_json("data/processed.json", orient="records")
+
+# if want to run row by row like in Jupyter notebook, install Jupyter extension for VSCode and designate cells using # %%
 # print(df.head())

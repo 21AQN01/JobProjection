@@ -13,6 +13,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# expose save json file as data api for the front end
 @app.get("/data")
 def get_data():
     df = pd.read_json("../data/processed.json")
