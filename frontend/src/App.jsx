@@ -20,6 +20,11 @@ function App() {
             ) : (
                 <p>Loading...</p>
             )}
+
+            <p>
+                Explore employment trends, salaries, occupations
+                accross majors
+            </p>
         </div>
     );
 }
