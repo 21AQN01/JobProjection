@@ -8,45 +8,59 @@ function BarChart({ data }) {
 
     useEffect(() => {
 
-        const width = 800;
-        const height = 500;
+    const width = 900;
+    const height = data.length * 35 + 50;
 
-        d3.select(svgRef.current).selectAll("*").remove();
+    const margin = {
+        top: 20,
+        right: 30,
+        bottom: 40,
+        left: 300
+    };
 
-        const svg = d3
-            .select(svgRef.current)
-            .attr("width", width)
-            .attr("height", height);
+    d3.select(svgRef.current).selectAll("*").remove();
 
-        const x = d3.scaleBand()
-            .domain(data.map(d => d.Occupation))
-            .range([50, width - 20])
-            .padding(0.2);
+    const svg = d3
+        .select(svgRef.current)
+        .attr("width", width)
+        .attr("height", height);
 
-        const y = d3.scaleLinear()
-            .domain([0, d3.max(data, d => d.Number)])
-            .nice()
-            .range([height - 40, 20]);
+    // X scale (Median Wage)
+    const x = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d.Median_Wage_2024)])
+        .nice()
+        .range([margin.left, width - margin.right]);
 
-        svg.selectAll("rect")
-            .data(data)
-            .enter()
-            .append("rect")
-            .attr("x", d => x(d.Occupation))
-            .attr("y", d => y(d.Number))
-            .attr("width", x.bandwidth())
-            .attr("height", d => height - 40 - y(d.Number));
+    // Y scale (Education names)
+    const y = d3.scaleBand()
+        .domain(data.map(d => d.Education))
+        .range([margin.top, height - margin.bottom])
+        .padding(0.2);
 
-        svg.append("g")
-            .attr("transform", `translate(0,${height-40})`)
-            .call(d3.axisBottom(x))
-            .selectAll("text")
-            .attr("transform","rotate(-45)")
-            .style("text-anchor","end");
+    // Draw bars
+    svg.selectAll("rect")
+        .data(data)
+        .join("rect")
+        .attr("x", margin.left)
+        .attr("y", d => y(d.Education))
+        .attr("width", d => x(d.Median_Wage_2024) - margin.left)
+        .attr("height", y.bandwidth());
 
-        svg.append("g")
-            .attr("transform","translate(50,0)")
-            .call(d3.axisLeft(y));
+    // X axis
+    svg.append("g")
+        .attr("transform", `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(x))
+    // X-axis label
+    svg.append("text")
+        .attr("x", (margin.left + width - margin.right) / 2)
+        .attr("y", height - 5)
+        .attr("text-anchor", "middle")
+        .text("Median Wage (USD)");
+
+    // Y axis
+    svg.append("g")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(y));
 
     }, [data]);
 
