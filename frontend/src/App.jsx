@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import BarChart from "./BarChart";
+import BarChart from "./components/BarChart";
+import Navbar from "./components/Navbar";
 import './App.css'
 
 function App() {
@@ -11,9 +12,11 @@ function App() {
             .then((json) => setData(json));
     }, []);
 
-    return (
+    return (   
         <div>
-            <h1>Employment Data</h1>
+            <Navbar />
+            <h1>Job Projection For College Students</h1>
+            <h3>By Anh Nguyen and Song Vu Nguyen</h3>
 
             {data.length > 0 ? (
                 <BarChart data={data} />
