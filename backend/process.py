@@ -101,11 +101,24 @@ grad_df["Occupation"] = grad_df["Occupation"].str.replace(
     r"[¹²³⁴⁵⁶⁷⁸⁹⁰]", "", regex=True
 )
 
-# Save processed data as csv
+# Load in the fifth table
+roadmap_df = pd.read_excel("raw_data/roadmap.xlsx")
+
+# drop nas and make sure column titles are clean
+roadmap_df = roadmap_df.dropna(how="all")
+roadmap_df = roadmap_df.dropna(axis=1, how="all")
+roadmap_df.columns = roadmap_df.columns.str.strip()
+
+#keep code as strings and not numbers
+roadmap_df["CIP2020Code"] = roadmap_df["CIP2020Code"].astype(str).str.strip()
+roadmap_df["SOC2018Code"] = roadmap_df["SOC2018Code"].astype(str).str.strip()
+
+# Save processed data as clean files
 main_df.to_csv("data/collegeScorecardEarn.csv", index=False)
 numEmployWages_df.to_csv("data/employPerDeg.csv", index=False)
 bachHigher_df.to_csv("data/bachelors_and_higher.csv", index=False)
 grad_df.to_csv("data/graddeg.csv", index=False)
-
+roadmap_df.to_csv("data/roadmap.csv", index=False)
+roadmap_df.to_json("data/roadmap.json", orient="records")
 
 
