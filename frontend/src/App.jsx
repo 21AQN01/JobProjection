@@ -7,12 +7,13 @@ import Salary from "./pages/Salary";
 import Trend from "./pages/Trend";
 import About from "./pages/About";
 import "./App.css";
+import Roadmap from "./components/Roadmap";
 
 function App() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/data")
+    fetch("http://127.0.0.1:8000/roadmap")
       .then((res) => res.json())
       .then((json) => setData(json));
   }, []);
@@ -26,11 +27,9 @@ function App() {
           element={
             <div>
               <h1>Job Projection For College Students</h1>
-              <p>
-                Explore employment trends, salaries, occupations accross majors
-              </p>
               {/* place holder, create new visuals to fit needs */}
-              {data.length > 0 ? <BarChart data={data} /> : <p>Loading...</p>}
+              {/*data.length > 0 ? <BarChart data={data} /> : <p>Loading...</p>*/}
+              {data.length > 0 ? <Roadmap data={data} /> : <p>Loading...</p>}
             </div>
           }
         />

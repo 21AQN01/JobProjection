@@ -1,10 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
-
+import json
 
 app = FastAPI()
 
+@app.get("/roadmap")
+def get_roadmap():
+    with open("../data/roadmap.json", "r") as file:
+        return json.load(file)
+        
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],

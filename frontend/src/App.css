@@ -182,3 +182,74 @@
     border-right-color: var(--border);
   }
 }
+
+.roadmap-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.roadmap-container h2 {
+  margin-bottom: 10px;
+}
+
+.major-selector {
+  margin: 25px 0;
+}
+
+.major-selector label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.major-selector select {
+  width: 100%;
+  max-width: 500px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.career-results {
+  margin-top: 35px;
+}
+
+.career-description {
+  margin-bottom: 20px;
+}
+
+.career-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.job-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  background: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.job-card h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.job-card p {
+  margin-bottom: 0;
+  color: #555;
+}
+
+@media (max-width: 800px) {
+  .career-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .career-grid {
+    grid-template-columns: 1fr;
+  }
+}

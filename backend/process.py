@@ -120,5 +120,3 @@ bachHigher_df.to_csv("data/bachelors_and_higher.csv", index=False)
 grad_df.to_csv("data/graddeg.csv", index=False)
 roadmap_df.to_csv("data/roadmap.csv", index=False)
 roadmap_df.to_json("data/roadmap.json", orient="records")
-
-
