@@ -113,6 +113,9 @@ roadmap_df.columns = roadmap_df.columns.str.strip()
 roadmap_df["CIP2020Code"] = roadmap_df["CIP2020Code"].astype(str).str.strip()
 roadmap_df["SOC2018Code"] = roadmap_df["SOC2018Code"].astype(str).str.strip()
 
+#strip period from job title
+roadmap_df["CIP2020Title"] = roadmap_df["CIP2020Title"].str.replace(".", "", regex=False)
+
 # Save processed data as clean files
 main_df.to_csv("data/collegeScorecardEarn.csv", index=False)
 numEmployWages_df.to_csv("data/employPerDeg.csv", index=False)

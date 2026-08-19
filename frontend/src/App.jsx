@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import BarChart from "./components/BarChart";
+// import BarChart from "./components/BarChart";
 import Navbar from "./components/NavBar";
 import Employment from "./pages/Employment";
 import Salary from "./pages/Salary";

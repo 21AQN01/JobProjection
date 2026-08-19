@@ -17,7 +17,7 @@ function Roadmap({ data }) {
 
       <p>
         Select a college major to explore potential jobs associated
-        with that major.
+        with that major
       </p>
 
       <div className="major-selector">
