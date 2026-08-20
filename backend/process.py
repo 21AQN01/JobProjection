@@ -119,7 +119,119 @@ roadmap_df["CIP2020Title"] = roadmap_df["CIP2020Title"].str.replace(".", "", reg
 # Save processed data as clean files
 main_df.to_csv("data/collegeScorecardEarn.csv", index=False)
 numEmployWages_df.to_csv("data/employPerDeg.csv", index=False)
+major_df.to_csv("data/majorEarnings.csv", index=False)
 bachHigher_df.to_csv("data/bachelors_and_higher.csv", index=False)
 grad_df.to_csv("data/graddeg.csv", index=False)
 roadmap_df.to_csv("data/roadmap.csv", index=False)
 roadmap_df.to_json("data/roadmap.json", orient="records")
+
+# Combining some BLS tables (oocupations/employment/roadmap)
+df1 = pd.read_excel("raw_data/occupation.xlsx")
+df2 = pd.read_excel("raw_data/oews_2025.xlsx")
+
+# Cleaning occupation table
+projections_df = df1[[
+    "2024 National Employment Matrix code",
+    "2024 National Employment Matrix title",
+    "Employment, 2024",
+    "Employment, 2034",
+    "Employment change, numeric, 2024–34",
+    "Employment change, percent, 2024–34",
+    "Occupational openings, 2024–34 annual average",
+    "Median annual wage, dollars, 2024[1]",
+    "Typical education needed for entry"
+]].copy()
+
+projections_df = projections_df.rename(columns={
+    "2024 National Employment Matrix code": "SOCCode",
+    "2024 National Employment Matrix title": "Occupation",
+    "Employment, 2024": "Employment_2024",
+    "Employment, 2034": "Employment_2034",
+    "Employment change, numeric, 2024–34": "Employment_Change",
+    "Employment change, percent, 2024–34": "Employment_Growth_Percent",
+    "Occupational openings, 2024–34 annual average": "Annual_Openings",
+    "Median annual wage, dollars, 2024[1]": "Median_Wage_2024",
+    "Typical education needed for entry": "Typical_Education"
+})
+
+# Cleaning owes table
+oews_df = df2[[
+    "OCC_CODE",
+    "OCC_TITLE",
+    "TOT_EMP",
+    "A_MEAN",
+    "A_MEDIAN",
+    "A_PCT10",
+    "A_PCT25",
+    "A_PCT75",
+    "A_PCT90"
+]].copy()
+
+oews_df = oews_df.rename(columns={
+    "OCC_CODE": "SOCCode",
+    "OCC_TITLE": "Occupation",
+    "TOT_EMP": "Employment_Current",
+    "A_MEAN": "Mean_Wage",
+    "A_MEDIAN": "Median_Wage",
+    "A_PCT10": "Wage_P10",
+    "A_PCT25": "Wage_P25",
+    "A_PCT75": "Wage_P75",
+    "A_PCT90": "Wage_P90"
+})
+
+# Merging roadmap to occupations
+roadmap_bls_df = roadmap_df.merge(
+    projections_df,
+    left_on="SOC2018Code",
+    right_on="SOCCode",
+    how="left"
+)
+
+# Merging the new roadmap/occupation table to the owes table
+roadmap_bls_df = roadmap_bls_df.merge(
+    oews_df,
+    left_on="SOC2018Code",
+    right_on="SOCCode",
+    how="left",
+    suffixes=("_projection", "_oews")
+)
+
+
+# Cleaning and renaming columns to make it easier to understand
+final_df = roadmap_bls_df[[
+    "CIP2020Code",
+    "CIP2020Title",
+    "SOC2018Code",
+    "SOC2018Title",
+    "Employment_Current",
+    "Mean_Wage",
+    "Median_Wage",
+    "Wage_P10",
+    "Wage_P25",
+    "Wage_P75",
+    "Wage_P90",
+    "Employment_2024",
+    "Employment_2034",
+    "Employment_Change",
+    "Employment_Growth_Percent",
+    "Annual_Openings",
+    "Typical_Education"
+]].copy()
+
+final_df = final_df.rename(columns={
+    "CIP2020Code": "Major_Code",
+    "CIP2020Title": "Major",
+    "SOC2018Code": "Occupation_Code",
+    "SOC2018Title": "Occupation",
+    "Employment_Current": "Current_Employment",
+    "Mean_Wage": "Mean_Wage",
+    "Median_Wage": "Current_Median_Wage",
+    "Wage_P10": "Wage_P10",
+    "Wage_P25": "Wage_P25",
+    "Wage_P75": "Wage_P75",
+    "Wage_P90": "Wage_P90"
+})
+
+# Saving to files
+final_df.to_csv("data/career_roadmap.csv", index=False)
+final_df.to_json("data/career_roadmap.json", orient="records")
