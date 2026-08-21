@@ -65,6 +65,16 @@ numEmployWages_df.iloc[:, 1:] = numEmployWages_df.iloc[:, 1:].apply(pd.to_numeri
 # Clean and only keep the needed columns
 numEmployWages_df = numEmployWages_df.drop(columns=["Employment distribution, percent, 2024", 
                                                     "Employment distribution, percent, 2034"])
+# Rename columns
+numEmployWages_df.columns = [
+    "Education",
+    "Employment_2024",
+    "Employment_2034",
+    "Emp_Numeric_Change",
+    "Emp_Percent_Change",
+    "Median_Wage_2024"
+]
+
 # Load in the third table, 
 bachHigher_df = pd.read_excel("raw_data/bachelors_and_higher.xlsx")
 
@@ -118,11 +128,23 @@ roadmap_df["CIP2020Title"] = roadmap_df["CIP2020Title"].str.replace(".", "", reg
 
 # Save processed data as clean files
 main_df.to_csv("data/collegeScorecardEarn.csv", index=False)
+
 numEmployWages_df.to_csv("data/employPerDeg.csv", index=False)
+numEmployWages_df.to_json("data/employPerDeg.json", orient="records")
+
+major_df["CIPDESC"] = major_df["CIPDESC"].str.replace(".", "", regex=False)
+# sort by median income
+major_df = major_df.sort_values("EARN_MDN_4YR_NAT", ascending=False)
 major_df.to_csv("data/majorEarnings.csv", index=False)
+major_df.to_json("data/majorEarnings.json", orient="records")
+
+
 bachHigher_df.to_csv("data/bachelors_and_higher.csv", index=False)
+
 grad_df.to_csv("data/graddeg.csv", index=False)
+
 roadmap_df.to_csv("data/roadmap.csv", index=False)
+
 roadmap_df.to_json("data/roadmap.json", orient="records")
 
 # Combining some BLS tables (oocupations/employment/roadmap)

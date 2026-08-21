@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./Roadmap.css";
 
 function Roadmap({ data }) {
   const [selectedMajor, setSelectedMajor] = useState("");
@@ -53,10 +54,6 @@ function Roadmap({ data }) {
                 key={`${job.SOC2018Code}-${index}`}
               >
                 <h3>{job.SOC2018Title}</h3>
-
-                <p>
-                  <strong>SOC:</strong> {job.SOC2018Code}
-                </p>
               </div>
             ))}
           </div>

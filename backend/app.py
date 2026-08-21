@@ -5,10 +5,7 @@ import json
 
 app = FastAPI()
 
-@app.get("/roadmap")
-def get_roadmap():
-    with open("../data/roadmap.json", "r") as file:
-        return json.load(file)
+
         
 app.add_middleware(
     CORSMiddleware,
@@ -19,7 +16,17 @@ app.add_middleware(
 )
 
 # expose save json file as data api for the front end
-@app.get("/data")
+@app.get("/employPerDeg")
 def get_data():
-    df = pd.read_json("../data/processed.json")
-    return df.to_dict(orient="records")
+    with open("../data/employPerDeg.json", "r") as file:
+            return json.load(file)
+
+@app.get("/majorEarnings")
+def get_data():
+    with open("../data/majorEarnings.json", "r") as file:
+            return json.load(file)
+
+@app.get("/roadmap")
+def get_roadmap():
+    with open("../data/roadmap.json", "r") as file:
+        return json.load(file)
