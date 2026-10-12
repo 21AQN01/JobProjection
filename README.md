@@ -1,5 +1,5 @@
 # Career Insights: A Data-Driven Analysis of Salaries, Employment, and Growth
-
+### By: Anh Nguyen & Song Vu Nguyen
 ## Overview
 
 Career Insights is a data-driven project designed to help students make more informed decisions about their college majors and future careers. By analyzing relationships between college majors, occupations, salaries, and employment projections, this project aims to provide students with a better understanding of their potential career outcomes and opportunities in the labor market.
